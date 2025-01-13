@@ -1,4 +1,3 @@
-import { notFound } from 'next/navigation'
 import { getUrlStats } from '@/app/api/urls'
 import { UrlStats } from '@/types/url'
 import {
@@ -8,7 +7,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { formatDistanceToNow } from 'date-fns'
-import { Calendar, Clock, ExternalLink, Globe, Monitor, MousePointer, Terminal } from 'lucide-react'
+import { AlertCircle, Calendar, Clock, Globe, Monitor, MousePointer, Terminal } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 function parseUserAgent(userAgent: string) {
@@ -22,12 +23,43 @@ export default async function StatsPage({
 }: {
   params: { shortKey: string }
 }) {
-  let stats: UrlStats
+  let stats: UrlStats | null = null
+  let error: string | null = null
+
   try {
     stats = await getUrlStats(params.shortKey)
-  } catch (error) {
-    notFound()
+  } catch (err) {
+    error = err instanceof Error ? err.message : 'Failed to fetch URL statistics'
   }
+
+  if (error) {
+    return (
+      <div className="container mx-auto py-10">
+        <div className="mx-auto max-w-4xl space-y-6">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-3">URL Statistics</h1>
+            <p className="text-lg text-muted-foreground">
+              Short URL: {process.env.NEXT_PUBLIC_BACKEND_URL}/{params.shortKey}
+            </p>
+          </div>
+          <Card>
+            <CardContent className="p-6">
+              <Alert variant="destructive" className="mb-6">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Heads up!</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+              <Button asChild>
+                <Link href="/urls">Back to URLs</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
+  if (!stats) return null
 
   const { browser, os } = parseUserAgent(stats.stats.userAgent)
   const ipChain = stats.stats.ip.split(',').map(ip => ip.trim())
@@ -36,7 +68,7 @@ export default async function StatsPage({
     <div className="container mx-auto py-10">
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold">URL Statistics</h1>
+          <h1 className="text-3xl font-bold mb-3">URL Statistics</h1>
           <p className="text-lg text-muted-foreground">
             Short URL: {process.env.NEXT_PUBLIC_BACKEND_URL}/{stats.stats.shortKey}
           </p>

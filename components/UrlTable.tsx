@@ -13,6 +13,9 @@ import {
 import { Badge } from './ui/badge'
 import { useState } from 'react'
 import { Input } from './ui/input'
+import { Button } from './ui/button'
+import { BarChart2, ExternalLink } from 'lucide-react'
+import Link from 'next/link'
 
 interface UrlTableProps {
   urls: ShortUrl[]
@@ -43,6 +46,7 @@ export function UrlTable({ urls }: UrlTableProps) {
               <TableHead className="max-w-[500px]">Original URL</TableHead>
               <TableHead>Expiration</TableHead>
               <TableHead>Created</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -77,6 +81,28 @@ export function UrlTable({ urls }: UrlTableProps) {
                 </TableCell>
                 <TableCell>
                   {formatDistanceToNow(new Date(url.createdAt), { addSuffix: true })}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="icon" asChild>
+                      <a 
+                        href={url.longUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </Button>
+                    <Button variant="ghost" size="icon" asChild>
+                      <Link 
+                        href={`/${url.shortKey}/stats`}
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        <BarChart2 className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
