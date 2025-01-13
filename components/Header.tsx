@@ -62,7 +62,7 @@ export function Header() {
               Create URL
             </Link>
             <Link href="/urls" className="text-muted-foreground hover:text-foreground">
-              My URLs
+              All URLs
             </Link>
             <Link href="/about" className="text-muted-foreground hover:text-foreground">
               About
@@ -95,7 +95,7 @@ export function Header() {
               <CommandShortcut>⌘N</CommandShortcut>
             </CommandItem>
             <CommandItem onSelect={() => runCommand(() => router.push("/urls"))}>
-              My URLs
+              All URLs
               <CommandShortcut>⌘U</CommandShortcut>
             </CommandItem>
             <CommandItem onSelect={() => runCommand(() => router.push("/about"))}>

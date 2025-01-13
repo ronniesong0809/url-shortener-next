@@ -4,20 +4,20 @@
   },
   "links": [
     {
-      "text": "Privacy Policy",
-      "href": "/privacy"
-    },
-    {
-      "text": "Status",
-      "href": "https://stats.uptimerobot.com/ezBNpwC4lT"
+      "text": "GitHub",
+      "href": "https://github.com/ronniesong0809/url-shortener-next"
     },
     {
       "text": "MIT License",
       "href": "https://github.com/ronniesong0809/url-shortener-next/blob/main/LICENSE"
     },
     {
-      "text": "Contact",
-      "href": "mailto:ronniesong0809@gmail.com"
+      "text": "Report Issue",
+      "href": "https://github.com/ronniesong0809/url-shortener-next/issues"
+    },
+    {
+      "text": "Status",
+      "href": "https://stats.uptimerobot.com/ezBNpwC4lT"
     }
   ]
-} 
+}

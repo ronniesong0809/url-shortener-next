@@ -1,3 +1,5 @@
+import { Github } from 'lucide-react'
+import Link from 'next/link'
 import content from '@/content/footer.json'
 
 export function Footer() {
@@ -8,15 +10,17 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} {content.copyright.text}
           </p>
-          <nav className="flex gap-4">
+          <nav className="flex items-center gap-4">
             {content.links.map((link, index) => (
-              <a
+              <Link
                 key={index}
                 href={link.href}
-                className="text-sm text-muted-foreground hover:text-primary"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-muted-foreground hover:text-foreground"
               >
                 {link.text}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>

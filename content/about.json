@@ -7,7 +7,10 @@
       "items": [
         "Shorten long URLs to concise, shareable links",
         "Set custom expiration times for links",
-        "Modern, responsive UI built with shadcn/ui"
+        "Track URL statistics and analytics",
+        "Modern, responsive UI built with shadcn/ui",
+        "Command menu (⌘K) for quick navigation",
+        "Dark mode support"
       ]
     },
     {
@@ -20,8 +23,9 @@
       ]
     }
   ],
-  "reportIssue": {
-    "text": "Report an Issue",
-    "url": "https://github.com/ronniesong0809/url-shortener-next/issues"
+  "github": {
+    "text": "View on GitHub",
+    "url": "https://github.com/ronniesong0809/url-shortener-next",
+    "description": "This project is open source. Feel free to contribute or report issues on GitHub."
   }
 } 
