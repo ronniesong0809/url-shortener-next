@@ -39,20 +39,21 @@ export function showAlert(message: string, type: AlertType = 'default', duration
 
   // Render the alert using React
   const root = createRoot(alertDiv)
-  const element = React.createElement(Alert, {
-    variant: type,
-    className: "flex items-center justify-between",
-    children: [
-      React.createElement('span', { key: 'message' }, message),
-      React.createElement('button', {
-        key: 'close',
-        onClick: removeAlert,
-        className: "ml-2 hover:opacity-80",
-        children: React.createElement(XCircle, { className: "h-4 w-4" })
-      })
-    ]
-  })
-  root.render(element)
+  root.render(
+    React.createElement(
+      Alert,
+      { variant: type, className: "flex items-center justify-between" },
+      React.createElement('span', null, message),
+      React.createElement(
+        'button',
+        {
+          onClick: removeAlert,
+          className: "ml-2 hover:opacity-80"
+        },
+        React.createElement(XCircle, { className: "h-4 w-4" })
+      )
+    )
+  )
 
   // Set timeout to remove the alert
   timeoutId = setTimeout(() => {
