@@ -50,7 +50,7 @@ export function UrlTable({ urls }: UrlTableProps) {
               <TableRow key={url._id}>
                 <TableCell>
                   <a 
-                    href={`${process.env.NEXT_BACKEND_URL}/${url.shortKey}`}
+                    href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${url.shortKey}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline"

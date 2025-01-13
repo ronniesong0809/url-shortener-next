@@ -1,5 +1,6 @@
 import { ShortUrl } from '@/types/url'
 import { UrlTable } from '@/components/UrlTable'
+import { ShortenUrlForm } from '@/components/ShortenUrlForm'
 import { Suspense } from 'react'
 import { getAllUrls } from './api/urls'
 
@@ -21,6 +22,9 @@ export default async function Home() {
   return (
     <main className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-8">URL Shortener Dashboard</h1>
+      <div className="mb-8">
+        <ShortenUrlForm />
+      </div>
       <Suspense fallback={<LoadingState />}>
         <UrlTable urls={urls} />
       </Suspense>
