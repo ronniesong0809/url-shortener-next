@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { Github, Keyboard, Loader2 } from "lucide-react"
+import { Keyboard, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   CommandDialog,
