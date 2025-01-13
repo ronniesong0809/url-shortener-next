@@ -1,0 +1,23 @@
+{
+  "copyright": {
+    "text": "URL Shortener. All rights reserved."
+  },
+  "links": [
+    {
+      "text": "Privacy Policy",
+      "href": "/privacy"
+    },
+    {
+      "text": "Status",
+      "href": "https://stats.uptimerobot.com/ezBNpwC4lT"
+    },
+    {
+      "text": "MIT License",
+      "href": "https://github.com/ronniesong0809/url-shortener-next/blob/main/LICENSE"
+    },
+    {
+      "text": "Contact",
+      "href": "mailto:ronniesong0809@gmail.com"
+    }
+  ]
+} 

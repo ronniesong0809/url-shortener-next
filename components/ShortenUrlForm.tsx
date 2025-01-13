@@ -32,6 +32,7 @@ export function ShortenUrlForm({ onSuccess }: ShortenUrlFormProps) {
       showAlert(result.message, 'default')
       onSuccess?.()
     } catch (err) {
+      console.error(err);
       showAlert('Failed to shorten URL. Please try again.', 'destructive')
     } finally {
       setIsLoading(false)

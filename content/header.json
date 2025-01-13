@@ -1,0 +1,20 @@
+{
+  "brand": {
+    "text": "URL Shortener",
+    "href": "/"
+  },
+  "navigation": [
+    {
+      "text": "Dashboard",
+      "href": "/"
+    },
+    {
+      "text": "About",
+      "href": "/about"
+    }
+  ],
+  "github": {
+    "href": "https://github.com/ronniesong0809/url-shortener-next",
+    "ariaLabel": "GitHub"
+  }
+} 

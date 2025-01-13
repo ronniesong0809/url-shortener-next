@@ -1,0 +1,27 @@
+{
+  "title": "About URL Shortener",
+  "description": "A modern URL shortener built with Next.js and shadcn/ui",
+  "sections": [
+    {
+      "title": "Features",
+      "items": [
+        "Shorten long URLs to concise, shareable links",
+        "Set custom expiration times for links",
+        "Modern, responsive UI built with shadcn/ui"
+      ]
+    },
+    {
+      "title": "Tech Stack",
+      "items": [
+        "Next.js 14",
+        "TypeScript",
+        "shadcn/ui Components",
+        "Tailwind CSS"
+      ]
+    }
+  ],
+  "reportIssue": {
+    "text": "Report an Issue",
+    "url": "https://github.com/ronniesong0809/url-shortener-next/issues"
+  }
+} 

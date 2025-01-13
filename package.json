@@ -1,7 +1,19 @@
 {
   "name": "url-shortener-next",
   "version": "0.1.0",
+  "description": "A modern URL shortener built with Next.js and shadcn/ui",
   "private": true,
+  "homepage": "https://github.com/ronniesong0809/url-shortener-next#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronniesong0809/url-shortener-next.git"
+  },
+  "author": "Ronnie Song",
+  "email": "ronniesong0809@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ronniesong0809/url-shortener-next/issues"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
