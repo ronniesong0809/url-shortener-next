@@ -27,4 +27,16 @@ export async function shortenUrl(url: string, expiration: number) {
   }
 
   return res.json()
+}
+
+export async function getUrlStats(shortKey: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/${shortKey}/stats`, {
+    next: { revalidate: 60 } // Revalidate every minute
+  })
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch URL stats')
+  }
+
+  return res.json()
 } 
