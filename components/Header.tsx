@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { Github, Keyboard } from "lucide-react"
+import { Github, Keyboard, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   CommandDialog,
@@ -15,10 +15,14 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
+import { getAllUrls } from "@/app/api/urls"
+import { ShortUrl } from "@/types/url"
 
 export function Header() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const [urls, setUrls] = useState<ShortUrl[]>([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -30,6 +34,16 @@ export function Header() {
     document.addEventListener("keydown", down)
     return () => document.removeEventListener("keydown", down)
   }, [])
+
+  useEffect(() => {
+    if (open) {
+      setLoading(true)
+      getAllUrls()
+        .then(data => setUrls(data))
+        .catch(console.error)
+        .finally(() => setLoading(false))
+    }
+  }, [open])
 
   const runCommand = (command: () => void) => {
     setOpen(false)
@@ -64,16 +78,6 @@ export function Header() {
             <Keyboard className="mr-2 h-4 w-4" />
             Command Menu
             <CommandShortcut>⌘K</CommandShortcut>
-          </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link
-              href="https://github.com/ronniesong0809/url-shortener-next"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Github className="h-4 w-4" />
-              <span className="sr-only">GitHub</span>
-            </Link>
           </Button>
         </div>
       </div>
@@ -115,6 +119,27 @@ export function Header() {
               <CommandShortcut>⌘G</CommandShortcut>
             </CommandItem>
           </CommandGroup>
+          <CommandSeparator />
+          {loading ? (
+            <CommandGroup heading="Loading URLs...">
+              <CommandItem disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </CommandItem>
+            </CommandGroup>
+          ) : urls.length > 0 ? (
+            <CommandGroup heading="Recent URLs">
+              {urls.map((url) => (
+                <CommandItem
+                  key={url._id}
+                  onSelect={() => runCommand(() => router.push(`/${url.shortKey}/stats`))}
+                >
+                  <span className="truncate">{url.longUrl}</span>
+                  <CommandShortcut>{url.shortKey}</CommandShortcut>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          ) : null}
         </CommandList>
       </CommandDialog>
     </header>
