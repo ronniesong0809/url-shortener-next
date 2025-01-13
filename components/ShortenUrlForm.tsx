@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "./ui/select"
 import { shortenUrl } from '@/app/api/urls'
+import { showAlert } from '@/lib/alerts'
 
 interface ShortenUrlFormProps {
   onSuccess?: () => void
@@ -20,19 +21,18 @@ export function ShortenUrlForm({ onSuccess }: ShortenUrlFormProps) {
   const [url, setUrl] = useState('')
   const [expiration, setExpiration] = useState('0')
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setIsLoading(true)
-    setError(null)
 
     try {
-      await shortenUrl(url, parseInt(expiration))
+      const result = await shortenUrl(url, parseInt(expiration))
       setUrl('')
+      showAlert(result.message, 'default')
       onSuccess?.()
     } catch (err) {
-      setError('Failed to shorten URL. Please try again.')
+      showAlert('Failed to shorten URL. Please try again.', 'destructive')
     } finally {
       setIsLoading(false)
     }
@@ -67,9 +67,6 @@ export function ShortenUrlForm({ onSuccess }: ShortenUrlFormProps) {
           {isLoading ? 'Shortening...' : 'Shorten URL'}
         </Button>
       </div>
-      {error && (
-        <p className="text-sm text-red-500">{error}</p>
-      )}
     </form>
   )
 } 

@@ -16,17 +16,23 @@ function LoadingState() {
   )
 }
 
-export default async function Home() {
+async function UrlTableServer() {
   const urls: ShortUrl[] = await getAllUrls()
+  return <UrlTable urls={urls} />
+}
 
+export default function Home() {
   return (
     <main className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-8">URL Shortener Dashboard</h1>
+      <div className="fixed top-4 right-4 z-50 w-96 space-y-2">
+        <div id="alert-container" />
+      </div>
       <div className="mb-8">
         <ShortenUrlForm />
       </div>
       <Suspense fallback={<LoadingState />}>
-        <UrlTable urls={urls} />
+        <UrlTableServer />
       </Suspense>
     </main>
   )
