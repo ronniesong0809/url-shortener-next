@@ -21,6 +21,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex min-h-screen flex-col">
           <Header />
+          <div className="fixed top-4 right-4 z-50 w-96 space-y-2">
+            <div id="alert-container" />
+          </div>
           <main className="flex-1">
             {children}
           </main>

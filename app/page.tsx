@@ -1,38 +1,32 @@
-import { ShortUrl } from '@/types/url'
-import { UrlTable } from '@/components/UrlTable'
-import { ShortenUrlForm } from '@/components/ShortenUrlForm'
-import { Suspense } from 'react'
-import { getAllUrls } from './api/urls'
-
-function LoadingState() {
-  return (
-    <div className="animate-pulse">
-      <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
-      <div className="space-y-4">
-        <div className="h-10 bg-gray-200 rounded"></div>
-        <div className="h-96 bg-gray-200 rounded"></div>
-      </div>
-    </div>
-  )
-}
-
-async function UrlTableServer() {
-  const urls: ShortUrl[] = await getAllUrls()
-  return <UrlTable urls={urls} />
-}
+import { Button } from '@/components/ui/button'
+import { Link2, List } from 'lucide-react'
+import Link from 'next/link'
 
 export default function Home() {
   return (
-    <main className="container mx-auto py-10">
-      <div className="fixed top-4 right-4 z-50 w-96 space-y-2">
-        <div id="alert-container" />
+    <div className="container mx-auto py-10">
+      <div className="mx-auto max-w-2xl">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold mb-3">URL Shortener</h1>
+          <p className="text-lg text-muted-foreground">
+            Create shortened URLs and track their performance
+          </p>
+        </div>
+        <div className="flex gap-4 justify-center">
+          <Button asChild size="lg">
+            <Link href="/create" className="gap-2">
+              <Link2 className="h-5 w-5" />
+              Create URL
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="lg">
+            <Link href="/urls" className="gap-2">
+              <List className="h-5 w-5" />
+              View URLs
+            </Link>
+          </Button>
+        </div>
       </div>
-      <div className="mb-8">
-        <ShortenUrlForm />
-      </div>
-      <Suspense fallback={<LoadingState />}>
-        <UrlTableServer />
-      </Suspense>
-    </main>
+    </div>
   )
 }
