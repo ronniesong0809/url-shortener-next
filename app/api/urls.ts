@@ -42,4 +42,20 @@ export async function getUrlStats(shortKey: string) {
   }
 
   return res.json()
+}
+
+export async function extendUrl(shortKey: string, expiration: number) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/extend`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ key: shortKey, expiration }),
+  })
+
+  if (!res.ok) {
+    throw new Error('Failed to extend URL expiration')
+  }
+
+  return res.json()
 } 
