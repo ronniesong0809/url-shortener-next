@@ -62,15 +62,25 @@ export function UrlTable({ urls }: UrlTableProps) {
                     {url.shortKey}
                   </a>
                 </TableCell>
-                <TableCell className="max-w-[500px] truncate">
-                  <a 
-                    href={url.longUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
-                  >
-                    {url.longUrl}
-                  </a>
+                <TableCell className="max-w-[500px]">
+                  <div className="space-y-1">
+                    <a 
+                      href={url.longUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline block truncate"
+                    >
+                      {url.metadata.title || url.longUrl}
+                    </a>
+                    {url.metadata.description && (
+                      <p className="text-sm text-muted-foreground truncate">
+                        {url.metadata.description}
+                      </p>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      {url.metadata.hostname}
+                    </p>
+                  </div>
                 </TableCell>
                 <TableCell>
                   {url.expiration === 0 ? (

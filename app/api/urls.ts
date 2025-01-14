@@ -1,13 +1,16 @@
+import { PaginatedUrlResponse } from '@/types/url'
+
 export async function getAllUrls() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/all`, {
-    next: { revalidate: 3600 }
+    cache: 'no-store'
   })
   
   if (!res.ok) {
     throw new Error('Failed to fetch URLs')
   }
  
-  return res.json()
+  const data: PaginatedUrlResponse = await res.json()
+  return data.urls
 }
 
 export async function shortenUrl(url: string, expiration: number) {
@@ -31,7 +34,7 @@ export async function shortenUrl(url: string, expiration: number) {
 
 export async function getUrlStats(shortKey: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/${shortKey}/stats`, {
-    next: { revalidate: 60 } // Revalidate every minute
+    cache: 'no-store'
   })
 
   if (!res.ok) {
