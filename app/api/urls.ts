@@ -1,4 +1,4 @@
-import { PaginatedUrlResponse } from '@/types/url'
+import { UrlPaginationResponse } from '@/types'
 
 export async function getAllUrls(page?: number, limit: number = 10) {
   const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/all`)
@@ -15,7 +15,7 @@ export async function getAllUrls(page?: number, limit: number = 10) {
     throw new Error('Failed to fetch URLs')
   }
  
-  const data: PaginatedUrlResponse = await res.json()
+  const data: UrlPaginationResponse = await res.json()
   return data
 }
 

@@ -2,7 +2,7 @@
 
 import { getAllUrls } from '@/app/api/urls'
 import { UrlTable } from './UrlTable'
-import { ShortenedUrl } from '@/types/url'
+import { ShortenedUrl } from '@/types'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { ShortenedUrl } from '@/types/url'
+import { ShortenedUrl } from '@/types'
 import { formatDistanceToNow } from 'date-fns'
 import {
   Table,

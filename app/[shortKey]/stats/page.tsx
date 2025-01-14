@@ -1,5 +1,5 @@
 import { getUrlStats } from '@/app/api/urls'
-import { UrlStats } from '@/types/url'
+import { UrlAnalytics } from '@/types'
 import {
   Card,
   CardContent,
@@ -24,7 +24,7 @@ export default async function StatsPage({
 }: {
   params: { shortKey: string }
 }) {
-  let stats: UrlStats | null = null
+  let stats: UrlAnalytics | null = null
   let error: string | null = null
 
   try {
