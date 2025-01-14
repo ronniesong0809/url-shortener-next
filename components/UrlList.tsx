@@ -2,12 +2,12 @@
 
 import { getAllUrls } from '@/app/api/urls'
 import { UrlTable } from './UrlTable'
-import { ShortUrl } from '@/types/url'
+import { ShortenedUrl } from '@/types/url'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-interface UrlData {
-  content: ShortUrl[]
+type UrlListData = {
+  content: ShortenedUrl[]
   currentPage: number
   totalPages: number
   totalItems: number
@@ -17,7 +17,7 @@ interface UrlData {
 export function UrlList() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [urlData, setUrlData] = useState<UrlData | null>(null)
+  const [urlData, setUrlData] = useState<UrlListData | null>(null)
   const [loading, setLoading] = useState(true)
 
   const initialPage = parseInt(searchParams.get('page') || '1')

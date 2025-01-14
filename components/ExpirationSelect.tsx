@@ -9,13 +9,13 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-interface ExpirationSelectProps {
+type UrlExpirationSelectProps = {
   value: number
   onValueChange: (value: string) => void
   disabled?: boolean
 }
 
-export function ExpirationSelect({ value, onValueChange, disabled }: ExpirationSelectProps) {
+export function ExpirationSelect({ value, onValueChange, disabled }: UrlExpirationSelectProps) {
   return (
     <Select
       value={value.toString()}

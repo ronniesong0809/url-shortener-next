@@ -13,14 +13,7 @@ function LoadingState() {
   )
 }
 
-interface PageProps {
-  searchParams: {
-    page?: string
-    limit?: string
-  }
-}
-
-export default function UrlsPage({ searchParams }: PageProps) {
+export default function UrlsPage() {
   return (
     <div className="container mx-auto py-10">
       <div className="mx-auto max-w-5xl">

@@ -13,11 +13,11 @@ import {
 import { shortenUrl } from '@/app/api/urls'
 import { showAlert } from '@/lib/alerts'
 
-interface ShortenUrlFormProps {
+type UrlShortenerFormProps = {
   onSuccess?: () => void
 }
 
-export function ShortenUrlForm({ onSuccess }: ShortenUrlFormProps) {
+export function ShortenUrlForm({ onSuccess }: UrlShortenerFormProps) {
   const [url, setUrl] = useState('')
   const [expiration, setExpiration] = useState('0')
   const [isLoading, setIsLoading] = useState(false)

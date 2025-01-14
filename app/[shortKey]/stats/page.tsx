@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { formatDistanceToNow, format } from 'date-fns'
-import { AlertCircle, Calendar, Clock, Globe, Monitor, MousePointer, Terminal, Circle } from 'lucide-react'
+import { AlertCircle, Calendar, Clock, Globe, Monitor, MousePointer, Terminal } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'

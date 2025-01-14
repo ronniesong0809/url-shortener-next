@@ -1,6 +1,6 @@
 'use client'
 
-import { ShortUrl } from '@/types/url'
+import { ShortenedUrl } from '@/types/url'
 import { formatDistanceToNow } from 'date-fns'
 import {
   Table,
@@ -21,8 +21,8 @@ import { showAlert } from '@/lib/alerts'
 import { ExpirationSelect } from './ExpirationSelect'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 
-interface UrlTableProps {
-  urls: ShortUrl[]
+type UrlTableProperties = {
+  urls: ShortenedUrl[]
   currentPage: number
   totalPages: number
   totalItems: number
@@ -41,7 +41,7 @@ export function UrlTable({
   onPageChange,
   onPageSizeChange,
   onRefresh 
-}: UrlTableProps) {
+}: UrlTableProperties) {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState<string | null>(null)
 
@@ -64,6 +64,7 @@ export function UrlTable({
       onRefresh?.()
     } catch (error) {
       showAlert('Failed to update URL expiration', 'destructive')
+      console.error(error);
     } finally {
       setLoading(null)
     }
