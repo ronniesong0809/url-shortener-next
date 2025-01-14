@@ -249,7 +249,7 @@ export default async function StatsPage({
                             </div>
                           </div>
 
-                          <div className="flex items-start gap-2 group">
+                          <div className="flex items-end gap-2 group">
                             <Terminal className="h-4 w-4 flex-shrink-0 mt-1 text-muted-foreground" />
                             <div className="font-mono text-[11px] leading-normal opacity-60 group-hover:opacity-100 transition-opacity">
                               {visit.userAgent}
