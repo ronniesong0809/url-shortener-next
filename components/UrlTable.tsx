@@ -13,7 +13,7 @@ import {
 import { useState } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
-import { BarChart2, ExternalLink } from 'lucide-react'
+import { BarChart2, ExternalLink, Link as LinkIcon } from 'lucide-react'
 import Link from 'next/link'
 import { extendUrl } from '@/app/api/urls'
 import { showAlert } from '@/lib/alerts'
@@ -27,11 +27,17 @@ interface UrlTableProps {
 export function UrlTable({ urls, onRefresh }: UrlTableProps) {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState<string | null>(null)
-  
-  const filteredUrls = urls.filter(url => 
-    url.longUrl.toLowerCase().includes(search.toLowerCase()) ||
-    url.shortKey.toLowerCase().includes(search.toLowerCase())
-  )
+
+  const filteredUrls = urls.filter(url => {
+    const searchLower = search.toLowerCase()
+    return (
+      url.longUrl.toLowerCase().includes(searchLower) ||
+      url.shortKey.toLowerCase().includes(searchLower) ||
+      url.metadata.title?.toLowerCase().includes(searchLower) ||
+      url.metadata.description?.toLowerCase().includes(searchLower) ||
+      url.metadata.hostname.toLowerCase().includes(searchLower)
+    )
+  })
 
   const handleExpirationChange = async (shortKey: string, expiration: string) => {
     setLoading(shortKey)
@@ -49,20 +55,19 @@ export function UrlTable({ urls, onRefresh }: UrlTableProps) {
   return (
     <div className="space-y-4">
       <Input
-        placeholder="Search URLs..."
+        placeholder="Search URLs, titles, or descriptions..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="max-w-sm"
       />
-      
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">Short URL</TableHead>
-              <TableHead className="max-w-[300px]">Original URL</TableHead>
-              <TableHead className="w-[130px]">Expiration</TableHead>
-              <TableHead>Created</TableHead>
+              <TableHead className="w-[500px]">URL Details</TableHead>
+              <TableHead className="w-[140px]">Expiration</TableHead>
+              <TableHead className="w-[140px]">Created</TableHead>
               <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -70,34 +75,32 @@ export function UrlTable({ urls, onRefresh }: UrlTableProps) {
             {filteredUrls.map((url) => (
               <TableRow key={url._id}>
                 <TableCell>
-                  <a 
-                    href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${url.shortKey}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
-                  >
-                    {url.shortKey}
-                  </a>
-                </TableCell>
-                <TableCell className="max-w-[500px]">
-                  <div className="space-y-1">
-                    <a 
-                      href={url.longUrl}
+
+                  <div className="space-y-1.5">
+                    <a
+                      href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${url.shortKey}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline block truncate"
+                      className="block group"
                     >
-                      {url.metadata.title || url.longUrl}
+                      <div className="font-medium line-clamp-1 group-hover:text-blue-600">
+                        <span className="mr-2 text-sm text-muted-foreground group-hover:text-blue-600">
+                          [{url.shortKey}]
+                        </span>
+                        {url.metadata.title || url.longUrl}
+                      </div>
                     </a>
                     {url.metadata.description && (
-                      <p className="text-sm text-muted-foreground truncate">
+                      <p className="text-sm text-muted-foreground line-clamp-2">
                         {url.metadata.description}
                       </p>
                     )}
-                    <p className="text-xs text-muted-foreground">
-                      {url.metadata.hostname}
-                    </p>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <LinkIcon className="h-3 w-3" />
+                      <span>{url.metadata.hostname}</span>
+                    </div>
                   </div>
+
                 </TableCell>
                 <TableCell>
                   <ExpirationSelect
@@ -112,19 +115,21 @@ export function UrlTable({ urls, onRefresh }: UrlTableProps) {
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <Button variant="ghost" size="icon" asChild>
-                      <a 
+                      <a
                         href={url.longUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
+                        title="Open original URL"
                       >
                         <ExternalLink className="h-4 w-4" />
                       </a>
                     </Button>
                     <Button variant="ghost" size="icon" asChild>
-                      <Link 
+                      <Link
                         href={`/${url.shortKey}/stats`}
                         className="text-muted-foreground hover:text-foreground"
+                        title="View statistics"
                       >
                         <BarChart2 className="h-4 w-4" />
                       </Link>
