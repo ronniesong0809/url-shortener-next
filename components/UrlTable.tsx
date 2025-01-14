@@ -13,6 +13,7 @@ import {
 import { useState } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
+import { Badge } from "./ui/badge"
 import { BarChart2, ExternalLink, Link as LinkIcon } from 'lucide-react'
 import Link from 'next/link'
 import { extendUrl } from '@/app/api/urls'
@@ -85,7 +86,7 @@ export function UrlTable({ urls, onRefresh }: UrlTableProps) {
                     >
                       <div className="font-medium line-clamp-1 group-hover:text-blue-600">
                         <span className="mr-2 text-sm text-muted-foreground group-hover:text-blue-600">
-                          [{url.shortKey}]
+                          <Badge>{url.shortKey}</Badge>
                         </span>
                         {url.metadata.title || url.longUrl}
                       </div>
