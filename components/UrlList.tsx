@@ -4,6 +4,7 @@ import { getAllUrls } from '@/app/api/urls'
 import { UrlTable } from './UrlTable'
 import { ShortUrl } from '@/types/url'
 import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface UrlData {
   content: ShortUrl[]
@@ -14,9 +15,21 @@ interface UrlData {
 }
 
 export function UrlList() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [urlData, setUrlData] = useState<UrlData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [pageSize, setPageSize] = useState(10)
+
+  const initialPage = parseInt(searchParams.get('page') || '1')
+  const initialLimit = parseInt(searchParams.get('limit') || '10')
+  const [pageSize, setPageSize] = useState(initialLimit)
+
+  const updateUrlParams = (page: number, limit: number) => {
+    const params = new URLSearchParams()
+    params.set('page', page.toString())
+    params.set('limit', limit.toString())
+    router.push(`/urls?${params.toString()}`)
+  }
 
   const fetchUrls = async (page?: number, limit?: number) => {
     try {
@@ -30,17 +43,19 @@ export function UrlList() {
   }
 
   useEffect(() => {
-    fetchUrls(1, pageSize)
-  }, [pageSize])
+    fetchUrls(initialPage, initialLimit)
+  }, [initialPage, initialLimit])
 
   const handlePageChange = (page: number) => {
     setLoading(true)
+    updateUrlParams(page, pageSize)
     fetchUrls(page, pageSize)
   }
 
   const handlePageSizeChange = (newPageSize: number) => {
     setPageSize(newPageSize)
     setLoading(true)
+    updateUrlParams(1, newPageSize) // Reset to page 1 when changing page size
   }
 
   if (loading || !urlData) {
