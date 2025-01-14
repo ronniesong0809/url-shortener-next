@@ -1,7 +1,13 @@
 import { PaginatedUrlResponse } from '@/types/url'
 
-export async function getAllUrls() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/all`, {
+export async function getAllUrls(page?: number, limit: number = 10) {
+  const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/all`)
+  if (page) {
+    url.searchParams.set('page', page.toString())
+  }
+  url.searchParams.set('limit', limit.toString())
+
+  const res = await fetch(url, {
     cache: 'no-store'
   })
   
@@ -10,7 +16,7 @@ export async function getAllUrls() {
   }
  
   const data: PaginatedUrlResponse = await res.json()
-  return data.urls
+  return data
 }
 
 export async function shortenUrl(url: string, expiration: number) {

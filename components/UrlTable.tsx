@@ -14,18 +14,34 @@ import { useState } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { Badge } from "./ui/badge"
-import { BarChart2, ExternalLink, Link as LinkIcon } from 'lucide-react'
+import { BarChart2, ExternalLink, Link as LinkIcon, ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { extendUrl } from '@/app/api/urls'
 import { showAlert } from '@/lib/alerts'
 import { ExpirationSelect } from './ExpirationSelect'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 
 interface UrlTableProps {
   urls: ShortUrl[]
+  currentPage: number
+  totalPages: number
+  totalItems: number
+  itemsPerPage: number
+  onPageChange: (page: number) => void
+  onPageSizeChange: (pageSize: number) => void
   onRefresh?: () => void
 }
 
-export function UrlTable({ urls, onRefresh }: UrlTableProps) {
+export function UrlTable({ 
+  urls, 
+  currentPage, 
+  totalPages, 
+  totalItems, 
+  itemsPerPage,
+  onPageChange,
+  onPageSizeChange,
+  onRefresh 
+}: UrlTableProps) {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState<string | null>(null)
 
@@ -55,12 +71,17 @@ export function UrlTable({ urls, onRefresh }: UrlTableProps) {
 
   return (
     <div className="space-y-4">
-      <Input
-        placeholder="Search URLs, titles, or descriptions..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="max-w-sm"
-      />
+      <div className="flex items-center justify-between">
+        <Input
+          placeholder="Search URLs, titles, or descriptions..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="max-w-sm"
+        />
+        <div className="text-sm text-muted-foreground">
+          {totalItems} URLs total
+        </div>
+      </div>
 
       <div className="rounded-md border">
         <Table>
@@ -76,7 +97,6 @@ export function UrlTable({ urls, onRefresh }: UrlTableProps) {
             {filteredUrls.map((url) => (
               <TableRow key={url._id}>
                 <TableCell>
-
                   <div className="space-y-1.5">
                     <a
                       href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${url.shortKey}`}
@@ -101,7 +121,6 @@ export function UrlTable({ urls, onRefresh }: UrlTableProps) {
                       <span>{url.metadata.hostname}</span>
                     </div>
                   </div>
-
                 </TableCell>
                 <TableCell>
                   <ExpirationSelect
@@ -141,6 +160,60 @@ export function UrlTable({ urls, onRefresh }: UrlTableProps) {
             ))}
           </TableBody>
         </Table>
+      </div>
+
+      <div className="flex items-center justify-between px-2">
+        <div className="flex items-center gap-4">
+          <div className="text-sm text-muted-foreground">
+            Showing {((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}
+          </div>
+          <Select
+            value={itemsPerPage.toString()}
+            onValueChange={(value) => onPageSizeChange(parseInt(value))}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue>{itemsPerPage} items per page</SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="10">10 per page</SelectItem>
+              <SelectItem value="20">20 per page</SelectItem>
+              <SelectItem value="100">100 per page</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Previous
+          </Button>
+          <div className="flex items-center gap-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <Button
+                key={page}
+                variant={page === currentPage ? "default" : "outline"}
+                size="sm"
+                onClick={() => onPageChange(page)}
+                className="w-8"
+              >
+                {page}
+              </Button>
+            ))}
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   )

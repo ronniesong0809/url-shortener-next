@@ -5,14 +5,23 @@ import { UrlTable } from './UrlTable'
 import { ShortUrl } from '@/types/url'
 import { useEffect, useState } from 'react'
 
-export function UrlList() {
-  const [urls, setUrls] = useState<ShortUrl[]>([])
-  const [loading, setLoading] = useState(true)
+interface UrlData {
+  urls: ShortUrl[]
+  currentPage: number
+  totalPages: number
+  totalItems: number
+  itemsPerPage: number
+}
 
-  const fetchUrls = async () => {
+export function UrlList() {
+  const [urlData, setUrlData] = useState<UrlData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [pageSize, setPageSize] = useState(10)
+
+  const fetchUrls = async (page?: number, limit?: number) => {
     try {
-      const data = await getAllUrls()
-      setUrls(data)
+      const data = await getAllUrls(page, limit)
+      setUrlData(data)
     } catch (error) {
       console.error('Failed to fetch URLs:', error)
     } finally {
@@ -21,12 +30,33 @@ export function UrlList() {
   }
 
   useEffect(() => {
-    fetchUrls()
-  }, [])
+    fetchUrls(1, pageSize)
+  }, [pageSize])
 
-  if (loading) {
+  const handlePageChange = (page: number) => {
+    setLoading(true)
+    fetchUrls(page, pageSize)
+  }
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageSize(newPageSize)
+    setLoading(true)
+  }
+
+  if (loading || !urlData) {
     return <div>Loading...</div>
   }
 
-  return <UrlTable urls={urls} onRefresh={fetchUrls} />
+  return (
+    <UrlTable 
+      urls={urlData.urls}
+      currentPage={urlData.currentPage}
+      totalPages={urlData.totalPages}
+      totalItems={urlData.totalItems}
+      itemsPerPage={urlData.itemsPerPage}
+      onPageChange={handlePageChange}
+      onPageSizeChange={handlePageSizeChange}
+      onRefresh={() => fetchUrls(urlData.currentPage, pageSize)}
+    />
+  )
 } 
