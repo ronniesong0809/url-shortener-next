@@ -23,7 +23,10 @@ export interface UrlStats {
     shortKey: string;
     clicks: number;
     visits: VisitData[];
-  }
+    createdAt: string;
+    updatedAt: string;
+  },
+  message: string;
 }
 
 export interface VisitData {
