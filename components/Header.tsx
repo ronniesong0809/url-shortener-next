@@ -15,12 +15,12 @@ import {
   CommandSeparator,
   CommandShortcut
 } from '@/components/ui/command'
-import { MetadataContent } from '@/types/url'
+import { UrlMetadataEntry } from '@/types'
 
 export function Header() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const [urls, setUrls] = useState<MetadataContent[]>([])
+  const [urls, setUrls] = useState<UrlMetadataEntry[]>([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
