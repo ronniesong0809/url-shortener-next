@@ -15,4 +15,4 @@ export type UrlPaginationResponse = PaginationBase & {
 
 export type MetadataPaginationResponse = PaginationBase & {
   content: UrlMetadataEntry[]
-} 
+}

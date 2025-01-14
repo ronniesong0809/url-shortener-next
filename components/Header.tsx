@@ -1,10 +1,10 @@
 'use client'
 
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import { Keyboard, Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { Keyboard, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   CommandDialog,
   CommandEmpty,
@@ -13,9 +13,9 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
-} from "@/components/ui/command"
-import { MetadataContent } from "@/types/url"
+  CommandShortcut
+} from '@/components/ui/command'
+import { MetadataContent } from '@/types/url'
 
 export function Header() {
   const router = useRouter()
@@ -25,21 +25,21 @@ export function Header() {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         setOpen((open) => !open)
       }
     }
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
+    document.addEventListener('keydown', down)
+    return () => document.removeEventListener('keydown', down)
   }, [])
 
   useEffect(() => {
     if (open) {
       setLoading(true)
       fetch('https://shorturl.ronniesong.com/all/metadata')
-        .then(response => response.json())
-        .then(data => setUrls(data.content))
+        .then((response) => response.json())
+        .then((data) => setUrls(data.content))
         .catch(console.error)
         .finally(() => setLoading(false))
     }
@@ -86,19 +86,19 @@ export function Header() {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Navigation">
-            <CommandItem onSelect={() => runCommand(() => router.push("/"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/'))}>
               Home
               <CommandShortcut>⌘H</CommandShortcut>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/create"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/create'))}>
               Create URL
               <CommandShortcut>⌘N</CommandShortcut>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/urls"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/urls'))}>
               All URLs
               <CommandShortcut>⌘U</CommandShortcut>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push("/about"))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/about'))}>
               About
               <CommandShortcut>⌘A</CommandShortcut>
             </CommandItem>
@@ -108,10 +108,7 @@ export function Header() {
             <CommandItem
               onSelect={() =>
                 runCommand(() =>
-                  window.open(
-                    "https://github.com/ronniesong0809/url-shortener-next",
-                    "_blank"
-                  )
+                  window.open('https://github.com/ronniesong0809/url-shortener-next', '_blank')
                 )
               }
             >
@@ -144,4 +141,4 @@ export function Header() {
       </CommandDialog>
     </header>
   )
-} 
+}

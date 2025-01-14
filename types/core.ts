@@ -12,4 +12,4 @@ export type UrlPageMetadata = {
   title: string
   description: string
   hostname: string
-} 
+}

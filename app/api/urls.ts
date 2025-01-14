@@ -10,11 +10,11 @@ export async function getAllUrls(page?: number, limit: number = 10) {
   const res = await fetch(url, {
     cache: 'no-store'
   })
-  
+
   if (!res.ok) {
     throw new Error('Failed to fetch URLs')
   }
- 
+
   const data: UrlPaginationResponse = await res.json()
   return data
 }
@@ -24,12 +24,11 @@ export async function shortenUrl(url: string, expiration: number) {
   const res = await fetch(shortenUrl, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ url, expiration }),
+    body: JSON.stringify({ url, expiration })
   })
-  console.log("shortenUrl", shortenUrl);
-  
+  console.log('shortenUrl', shortenUrl)
 
   if (!res.ok) {
     throw new Error('Failed to shorten URL')
@@ -54,9 +53,9 @@ export async function extendUrl(shortKey: string, expiration: number) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/extend`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ key: shortKey, expiration }),
+    body: JSON.stringify({ key: shortKey, expiration })
   })
 
   if (!res.ok) {
@@ -64,4 +63,4 @@ export async function extendUrl(shortKey: string, expiration: number) {
   }
 
   return res.json()
-} 
+}

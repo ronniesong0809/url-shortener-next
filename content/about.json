@@ -15,12 +15,7 @@
     },
     {
       "title": "Tech Stack",
-      "items": [
-        "Next.js 14",
-        "TypeScript",
-        "shadcn/ui Components",
-        "Tailwind CSS"
-      ]
+      "items": ["Next.js 14", "TypeScript", "shadcn/ui Components", "Tailwind CSS"]
     }
   ],
   "github": {
@@ -28,4 +23,4 @@
     "url": "https://github.com/ronniesong0809/url-shortener-next",
     "description": "This project is open source. Feel free to contribute or report issues on GitHub."
   }
-} 
+}

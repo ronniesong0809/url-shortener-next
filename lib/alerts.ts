@@ -42,15 +42,15 @@ export function showAlert(message: string, type: AlertType = 'default', duration
   root.render(
     React.createElement(
       Alert,
-      { variant: type, className: "flex items-center justify-between" },
+      { variant: type, className: 'flex items-center justify-between' },
       React.createElement('span', null, message),
       React.createElement(
         'button',
         {
           onClick: removeAlert,
-          className: "ml-2 hover:opacity-80"
+          className: 'ml-2 hover:opacity-80'
         },
-        React.createElement(XCircle, { className: "h-4 w-4" })
+        React.createElement(XCircle, { className: 'h-4 w-4' })
       )
     )
   )
@@ -59,4 +59,4 @@ export function showAlert(message: string, type: AlertType = 'default', duration
   timeoutId = setTimeout(() => {
     removeAlert()
   }, duration)
-} 
+}

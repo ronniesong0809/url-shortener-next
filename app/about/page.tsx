@@ -9,9 +9,7 @@ export default function AboutPage() {
       <div className="mx-auto max-w-2xl">
         <div className="mb-8 text-center">
           <h1 className="mb-2 text-3xl font-bold">{content.title}</h1>
-          <p className="text-lg text-muted-foreground">
-            {content.description}
-          </p>
+          <p className="text-lg text-muted-foreground">{content.description}</p>
         </div>
 
         {content.sections.map((section, index) => (
@@ -29,11 +27,11 @@ export default function AboutPage() {
         ))}
 
         <div className="text-center">
-          <p className="text-muted-foreground mb-4">{content.github.description}</p>
+          <p className="mb-4 text-muted-foreground">{content.github.description}</p>
           <Button asChild>
-            <Link 
+            <Link
               href={content.github.url}
-              target="_blank" 
+              target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2"
             >
@@ -45,4 +43,4 @@ export default function AboutPage() {
       </div>
     </div>
   )
-} 
+}

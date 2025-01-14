@@ -3,13 +3,7 @@
 import { useState } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { shortenUrl } from '@/app/api/urls'
 import { showAlert } from '@/lib/alerts'
 
@@ -45,10 +39,7 @@ export function CreateUrl() {
           required
           className="flex-1"
         />
-        <Select
-          value={expiration}
-          onValueChange={setExpiration}
-        >
+        <Select value={expiration} onValueChange={setExpiration}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Expiration" />
           </SelectTrigger>
@@ -65,4 +56,4 @@ export function CreateUrl() {
       </div>
     </form>
   )
-} 
+}

@@ -20,22 +20,26 @@ A modern URL shortener built with Next.js and shadcn/ui. Create shortened URLs, 
 ## Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/ronniesong0809/url-shortener-next.git
 cd url-shortener-next
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the root directory and add your environment variables:
+
 ```env
 NEXT_PUBLIC_BACKEND_URL=your_backend_url
 ```
 
 4. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -45,11 +49,13 @@ npm run dev
 ## Usage
 
 1. **Create Short URL**
+
    - Enter a long URL
    - Choose expiration time (optional)
    - Click "Shorten URL"
 
 2. **View Statistics**
+
    - Click on the chart icon next to any URL
    - View clicks, browser info, and more
 

@@ -8,18 +8,24 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+  TableRow
+} from '@/components/ui/table'
 import { useState } from 'react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
-import { Badge } from "./ui/badge"
+import { Badge } from './ui/badge'
 import { BarChart2, ExternalLink, Link as LinkIcon, ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { extendUrl } from '@/app/api/urls'
 import { showAlert } from '@/lib/alerts'
 import { ExpirationSelect } from './ExpirationSelect'
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem
+} from '@/components/ui/select'
 
 type UrlTableProperties = {
   urls: ShortenedUrl[]
@@ -32,20 +38,20 @@ type UrlTableProperties = {
   onRefresh?: () => void
 }
 
-export function UrlTable({ 
-  urls, 
-  currentPage, 
-  totalPages, 
-  totalItems, 
+export function UrlTable({
+  urls,
+  currentPage,
+  totalPages,
+  totalItems,
   itemsPerPage,
   onPageChange,
   onPageSizeChange,
-  onRefresh 
+  onRefresh
 }: UrlTableProperties) {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState<string | null>(null)
 
-  const filteredUrls = urls.filter(url => {
+  const filteredUrls = urls.filter((url) => {
     const searchLower = search.toLowerCase()
     return (
       url.longUrl.toLowerCase().includes(searchLower) ||
@@ -64,7 +70,7 @@ export function UrlTable({
       onRefresh?.()
     } catch (error) {
       showAlert('Failed to update URL expiration', 'destructive')
-      console.error(error);
+      console.error(error)
     } finally {
       setLoading(null)
     }
@@ -79,9 +85,7 @@ export function UrlTable({
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-sm"
         />
-        <div className="text-sm text-muted-foreground">
-          {totalItems} URLs total
-        </div>
+        <div className="text-sm text-muted-foreground">{totalItems} URLs total</div>
       </div>
 
       <div className="rounded-md border">
@@ -103,9 +107,9 @@ export function UrlTable({
                       href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${url.shortKey}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block group"
+                      className="group block"
                     >
-                      <div className="font-medium line-clamp-1 group-hover:text-blue-600">
+                      <div className="line-clamp-1 font-medium group-hover:text-blue-600">
                         <span className="mr-2 text-sm text-muted-foreground group-hover:text-blue-600">
                           <Badge>{url.shortKey}</Badge>
                         </span>
@@ -113,7 +117,7 @@ export function UrlTable({
                       </div>
                     </a>
                     {url.metadata.description && (
-                      <p className="text-sm text-muted-foreground line-clamp-2">
+                      <p className="line-clamp-2 text-sm text-muted-foreground">
                         {url.metadata.description}
                       </p>
                     )}
@@ -166,7 +170,8 @@ export function UrlTable({
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center gap-4">
           <div className="text-sm text-muted-foreground">
-            Showing {((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}
+            Showing {(currentPage - 1) * itemsPerPage + 1}-
+            {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}
           </div>
           <Select
             value={itemsPerPage.toString()}
@@ -196,7 +201,7 @@ export function UrlTable({
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
                 key={page}
-                variant={page === currentPage ? "default" : "outline"}
+                variant={page === currentPage ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => onPageChange(page)}
                 className="w-8"
@@ -218,4 +223,4 @@ export function UrlTable({
       </div>
     </div>
   )
-} 
+}

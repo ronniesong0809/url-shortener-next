@@ -6,8 +6,8 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+  SelectValue
+} from '@/components/ui/select'
 
 type UrlExpirationSelectProps = {
   value: number
@@ -17,18 +17,12 @@ type UrlExpirationSelectProps = {
 
 export function ExpirationSelect({ value, onValueChange, disabled }: UrlExpirationSelectProps) {
   return (
-    <Select
-      value={value.toString()}
-      onValueChange={onValueChange}
-      disabled={disabled}
-    >
+    <Select value={value.toString()} onValueChange={onValueChange} disabled={disabled}>
       <SelectTrigger className="w-[140px]">
-        <SelectValue>
-          {getExpirationText(value)}
-        </SelectValue>
+        <SelectValue>{getExpirationText(value)}</SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {EXPIRATION_OPTIONS.map(option => (
+        {EXPIRATION_OPTIONS.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}
           </SelectItem>
@@ -36,4 +30,4 @@ export function ExpirationSelect({ value, onValueChange, disabled }: UrlExpirati
       </SelectContent>
     </Select>
   )
-} 
+}

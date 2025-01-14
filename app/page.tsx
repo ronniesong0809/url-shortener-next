@@ -7,12 +7,12 @@ export default function Home() {
     <div className="container mx-auto py-10">
       <div className="mx-auto max-w-2xl">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-3">URL Shortener</h1>
+          <h1 className="mb-3 text-3xl font-bold">URL Shortener</h1>
           <p className="text-lg text-muted-foreground">
             Create shortened URLs and track their performance
           </p>
         </div>
-        <div className="flex gap-4 justify-center">
+        <div className="flex justify-center gap-4">
           <Button asChild size="lg">
             <Link href="/create" className="gap-2">
               <Link2 className="h-5 w-5" />

@@ -16,4 +16,4 @@ export type UrlAnalytics = {
     updatedAt: string
   }
   message: string
-} 
+}
