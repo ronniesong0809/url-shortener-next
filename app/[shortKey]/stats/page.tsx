@@ -61,8 +61,8 @@ export default async function StatsPage({
 
   if (!stats) return null
 
-  const { browser, os } = parseUserAgent(stats.stats.userAgent)
-  const ipChain = stats.stats.ip.split(',').map(ip => ip.trim())
+  const { browser, os } = parseUserAgent(stats.content.visits[0].userAgent)
+  const ipChain = stats.content.visits[0].ip.split(',').map(ip => ip.trim())
 
   return (
     <div className="container mx-auto py-10">
@@ -70,7 +70,7 @@ export default async function StatsPage({
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-3">URL Statistics</h1>
           <p className="text-lg text-muted-foreground">
-            Short URL: {process.env.NEXT_PUBLIC_BACKEND_URL}/{stats.stats.shortKey}
+            Short URL: {process.env.NEXT_PUBLIC_BACKEND_URL}/{stats.content.shortKey}
           </p>
         </div>
 
@@ -86,7 +86,7 @@ export default async function StatsPage({
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Total Clicks</p>
-                  <p className="text-2xl font-bold">{stats.stats.clicks}</p>
+                  <p className="text-2xl font-bold">{stats.content.clicks}</p>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -123,7 +123,7 @@ export default async function StatsPage({
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">User Agent</p>
-                  <p className="font-medium text-sm break-all">{stats.stats.userAgent}</p>
+                  <p className="font-medium text-sm break-all">{stats.content.visits[0].userAgent}</p>
                 </div>
               </div>
             </CardContent>
@@ -141,7 +141,7 @@ export default async function StatsPage({
                 <div>
                   <p className="text-sm text-muted-foreground">Created</p>
                   <p className="font-medium">
-                    {formatDistanceToNow(new Date(stats.stats.createdAt), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(stats.content.visits[0].createdAt), { addSuffix: true })}
                   </p>
                 </div>
               </div>
@@ -152,7 +152,7 @@ export default async function StatsPage({
                 <div>
                   <p className="text-sm text-muted-foreground">Last Updated</p>
                   <p className="font-medium">
-                    {formatDistanceToNow(new Date(stats.stats.updatedAt), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(stats.content.visits[0].updatedAt), { addSuffix: true })}
                   </p>
                 </div>
               </div>

@@ -15,13 +15,12 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
-import { getAllUrls } from "@/app/api/urls"
-import { ShortUrl } from "@/types/url"
+import { MetadataContent } from "@/types/url"
 
 export function Header() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const [urls, setUrls] = useState<ShortUrl[]>([])
+  const [urls, setUrls] = useState<MetadataContent[]>([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -38,8 +37,9 @@ export function Header() {
   useEffect(() => {
     if (open) {
       setLoading(true)
-      getAllUrls()
-        .then(data => setUrls(data))
+      fetch('https://shorturl.ronniesong.com/all/metadata')
+        .then(response => response.json())
+        .then(data => setUrls(data.content))
         .catch(console.error)
         .finally(() => setLoading(false))
     }
@@ -131,10 +131,10 @@ export function Header() {
             <CommandGroup heading="Recent URLs">
               {urls.map((url) => (
                 <CommandItem
-                  key={url._id}
+                  key={url.shortKey}
                   onSelect={() => runCommand(() => router.push(`/${url.shortKey}/stats`))}
                 >
-                  <span className="truncate">{url.longUrl}</span>
+                  <span className="truncate">{url.metadata.title || url.metadata.hostname}</span>
                   <CommandShortcut>{url.shortKey}</CommandShortcut>
                 </CommandItem>
               ))}

@@ -6,7 +6,7 @@ import { ShortUrl } from '@/types/url'
 import { useEffect, useState } from 'react'
 
 interface UrlData {
-  urls: ShortUrl[]
+  content: ShortUrl[]
   currentPage: number
   totalPages: number
   totalItems: number
@@ -48,8 +48,8 @@ export function UrlList() {
   }
 
   return (
-    <UrlTable 
-      urls={urlData.urls}
+    <UrlTable
+      urls={urlData.content}
       currentPage={urlData.currentPage}
       totalPages={urlData.totalPages}
       totalItems={urlData.totalItems}
