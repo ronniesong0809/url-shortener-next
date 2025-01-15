@@ -2,7 +2,7 @@ import { getUrlStats } from '@/app/api/urls'
 import { UrlAnalytics } from '@/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDistanceToNow, format } from 'date-fns'
-import { AlertCircle, Calendar, Clock, Globe, Monitor, MousePointer, Terminal } from 'lucide-react'
+import { AlertCircle, Calendar, Clock, Eye, Globe, Monitor, MousePointer, Terminal } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -56,7 +56,7 @@ export default async function StatsPage({ params }: { params: { shortKey: string
   // Get the latest visit
   const latestVisit = stats.content.visits[stats.content.visits.length - 1]
   const { browser, os } = parseUserAgent(latestVisit.userAgent)
-  const ipChain = latestVisit.ip.split(',').map((ip) => ip.trim())
+  const ipChain = latestVisit.ip?.split(',').map((ip) => ip.trim())
 
   return (
     <div className="container mx-auto py-10">
@@ -85,51 +85,6 @@ export default async function StatsPage({ params }: { params: { shortKey: string
               </div>
               <div className="flex gap-3">
                 <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
-                  <Monitor className="h-5 w-5 text-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Latest Browser</p>
-                  <p className="font-medium">{browser}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">Operating System</p>
-                  <p className="font-medium">{os}</p>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
-                  <Globe className="h-5 w-5 text-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Latest IP Chain</p>
-                  <div className="space-y-1">
-                    {ipChain.map((ip, index) => (
-                      <p key={index} className="font-medium">
-                        {ip}
-                        {index === 0 && ' (Origin)'}
-                        {index === ipChain.length - 1 && index !== 0 && ' (Proxy)'}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
-                  <Terminal className="h-5 w-5 text-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Latest User Agent</p>
-                  <p className="break-all text-sm font-medium">{latestVisit.userAgent}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Timeline</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-3">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
                   <Calendar className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
@@ -152,7 +107,7 @@ export default async function StatsPage({ params }: { params: { shortKey: string
               </div>
               <div className="flex gap-3">
                 <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
-                  <Clock className="h-5 w-5 text-foreground" />
+                  <Eye className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Last Visit</p>
@@ -161,6 +116,51 @@ export default async function StatsPage({ params }: { params: { shortKey: string
                       addSuffix: true
                     })}
                   </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Last Visit</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-3">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
+                  <Monitor className="h-5 w-5 text-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Latest Browser</p>
+                  <p className="font-medium">{browser}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Operating System</p>
+                  <p className="font-medium">{os}</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
+                  <Globe className="h-5 w-5 text-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Latest IP Chain</p>
+                  <div className="space-y-1">
+                    {ipChain && ipChain.map((ip, index) => (
+                      <p key={index} className="font-medium">
+                        {ip}
+                        {index === 0 && ' (Origin)'}
+                        {index === ipChain.length - 1 && index !== 0 && ' (Proxy)'}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
+                  <Terminal className="h-5 w-5 text-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Latest User Agent</p>
+                  <p className="break-all text-sm font-medium">{latestVisit.userAgent}</p>
                 </div>
               </div>
             </CardContent>
@@ -178,12 +178,12 @@ export default async function StatsPage({ params }: { params: { shortKey: string
             <div className="relative">
               <div className="absolute bottom-0 left-8 top-0 w-[2px] bg-gradient-to-b from-border via-primary/20 to-border" />
               <div>
-                {stats.content.visits
+                {stats.content.visits && stats.content.visits
                   .slice()
                   .reverse()
                   .map((visit, index, array) => {
                     const { browser, os } = parseUserAgent(visit.userAgent)
-                    const ipChain = visit.ip.split(',').map((ip) => ip.trim())
+                    const ipChain = visit.ip?.split(',').map((ip) => ip.trim()) || visit.ip || null
                     const visitDate = new Date(visit.createdAt)
                     const isFirst = index === 0
                     const isLast = index === array.length - 1
@@ -229,7 +229,7 @@ export default async function StatsPage({ params }: { params: { shortKey: string
                             <div className="flex items-start gap-2 text-muted-foreground">
                               <Globe className="mt-1 h-4 w-4 flex-shrink-0" />
                               <div className="space-y-1">
-                                {ipChain.map((ip, idx) => (
+                                {ipChain && ipChain.map((ip, idx) => (
                                   <div key={idx} className="flex items-center gap-1.5">
                                     <span className="font-medium text-foreground">{ip}</span>
                                     {idx === 0 && (
