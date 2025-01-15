@@ -60,7 +60,7 @@ export function VisitTimeline({ visits }: VisitTimelineProps) {
                                   ? 'First Visit'
                                   : `Visit #${visits.length - index}`}
                             </div>
-                            <div className="font-medium">{visit.ipInfo.query || visit.ip}</div>
+                            <div className="font-medium">{visit.ipInfo?.query || visit.ip}</div>
                           </div>
                           <div className="text-sm text-muted-foreground">
                             {format(visitDate, 'p')}, {format(visitDate, 'PPP')}
@@ -68,18 +68,20 @@ export function VisitTimeline({ visits }: VisitTimelineProps) {
                         </div>
 
                         <div className="grid gap-2 text-sm">
-                          <div className="flex items-center gap-2 text-muted-foreground">
-                            <Monitor className="h-4 w-4 flex-shrink-0" />
-                            <span className="font-medium text-foreground">
-                              {visit.userAgentInfo.browser.name}{' '}
-                              {visit.userAgentInfo.browser.version}
-                            </span>
-                            <span>on</span>
-                            <span className="font-medium text-foreground">
-                              {visit.userAgentInfo.os.name} {visit.userAgentInfo.os.version}
-                            </span>
-                          </div>
-                          {visit.ipInfo.city && visit.ipInfo.regionName && (
+                          {visit.userAgentInfo && (
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                              <Monitor className="h-4 w-4 flex-shrink-0" />
+                              <span className="font-medium text-foreground">
+                                {visit.userAgentInfo.browser.name}{' '}
+                                {visit.userAgentInfo.browser.version}
+                              </span>
+                              <span>on</span>
+                              <span className="font-medium text-foreground">
+                                {visit.userAgentInfo.os.name} {visit.userAgentInfo.os.version}
+                              </span>
+                            </div>
+                          )}
+                          {visit.ipInfo?.city && visit.ipInfo?.regionName && (
                             <div className="flex items-center">
                               <a
                                 href={`https://www.google.com/maps/place/${visit.ipInfo.city}, ${visit.ipInfo.regionName}, ${visit.ipInfo.zip} ${visit.ipInfo.countryCode}`}
