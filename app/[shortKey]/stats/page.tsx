@@ -11,18 +11,13 @@ import {
   Globe,
   Monitor,
   MousePointer,
-  Terminal
+  Terminal,
+  MapPin
 } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-
-function parseUserAgent(userAgent: string) {
-  const browser = userAgent.match(/Chrome|Firefox|Safari|Edge|Opera|MSIE|Trident/)?.[0] || 'Unknown'
-  const os = userAgent.match(/Windows|Mac OS X|Linux|Android|iOS/)?.[0] || 'Unknown'
-  return { browser, os }
-}
 
 export default async function StatsPage({ params }: { params: { shortKey: string } }) {
   let stats: UrlAnalytics | null = null
@@ -65,8 +60,7 @@ export default async function StatsPage({ params }: { params: { shortKey: string
 
   // Get the latest visit
   const latestVisit = stats.content.visits[stats.content.visits.length - 1]
-  const { browser, os } = parseUserAgent(latestVisit.userAgent)
-  const ipChain = latestVisit.ip?.split(',').map((ip) => ip.trim())
+  const ipChain = latestVisit.ip?.split(',').map((ip) => ip.trim()) || latestVisit.ip || null
 
   return (
     <div className="container mx-auto py-10">
@@ -80,10 +74,10 @@ export default async function StatsPage({ params }: { params: { shortKey: string
               rel="noopener noreferrer"
               className="group block"
             >
-              <div className="flex items-center gap-1">
+              <span className="flex items-center gap-1">
                 {process.env.NEXT_PUBLIC_BACKEND_URL}/{stats.content.shortKey}
                 <ExternalLink className="h-3 w-3" />
-              </div>
+              </span>
             </a>
           </p>
         </div>
@@ -132,7 +126,7 @@ export default async function StatsPage({ params }: { params: { shortKey: string
                 <div>
                   <p className="text-sm text-muted-foreground">Last Visit</p>
                   <p className="font-medium">
-                    {formatDistanceToNow(new Date(stats.content.visits[0].createdAt), {
+                    {formatDistanceToNow(new Date(latestVisit.createdAt), {
                       addSuffix: true
                     })}
                   </p>
@@ -151,18 +145,47 @@ export default async function StatsPage({ params }: { params: { shortKey: string
                   <Monitor className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Latest Browser</p>
-                  <p className="font-medium">{browser}</p>
+                  <p className="text-sm text-muted-foreground">Browser</p>
+                  <p className="font-medium">
+                    {latestVisit.userAgentInfo.browser.name}{' '}
+                    {latestVisit.userAgentInfo.browser.version}
+                  </p>
                   <p className="mt-1 text-sm text-muted-foreground">Operating System</p>
-                  <p className="font-medium">{os}</p>
+                  <p className="font-medium">
+                    {latestVisit.userAgentInfo.os.name} {latestVisit.userAgentInfo.os.version}
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">Device</p>
+                  <p className="font-medium">
+                    {latestVisit.userAgentInfo.device.vendor}{' '}
+                    {latestVisit.userAgentInfo.device.model}
+                  </p>
                 </div>
               </div>
+              {latestVisit.ipInfo.city &&
+                latestVisit.ipInfo.regionName &&
+                latestVisit.ipInfo.country &&
+                latestVisit.ipInfo.isp && (
+                  <div className="flex gap-3">
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
+                      <MapPin className="h-5 w-5 text-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Location</p>
+                      <p className="font-medium">
+                        {latestVisit.ipInfo.city}, {latestVisit.ipInfo.regionName}
+                      </p>
+                      <p className="font-medium">{latestVisit.ipInfo.country}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">ISP</p>
+                      <p className="font-medium">{latestVisit.ipInfo.isp}</p>
+                    </div>
+                  </div>
+                )}
               <div className="flex gap-3">
                 <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
                   <Globe className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Latest IP Chain</p>
+                  <p className="text-sm text-muted-foreground">IP Chain</p>
                   <div className="space-y-1">
                     {ipChain &&
                       ipChain.map((ip, index) => (
@@ -204,7 +227,6 @@ export default async function StatsPage({ params }: { params: { shortKey: string
                     .slice()
                     .reverse()
                     .map((visit, index, array) => {
-                      const { browser, os } = parseUserAgent(visit.userAgent)
                       const ipChain =
                         visit.ip?.split(',').map((ip) => ip.trim()) || visit.ip || null
                       const visitDate = new Date(visit.createdAt)
@@ -234,28 +256,52 @@ export default async function StatsPage({ params }: { params: { shortKey: string
                                       ? 'First Visit'
                                       : `Visit #${stats.content.visits.length - index}`}
                                 </div>
-                                <div className="font-medium">{format(visitDate, 'p')}</div>
+                                <div className="font-medium">{visit.ipInfo.query || visit.ip}</div>
                               </div>
                               <div className="text-sm text-muted-foreground">
-                                {format(visitDate, 'PPP')}
+                                {format(visitDate, 'p')}, {format(visitDate, 'PPP')}
                               </div>
                             </div>
 
                             <div className="grid gap-2 text-sm">
                               <div className="flex items-center gap-2 text-muted-foreground">
                                 <Monitor className="h-4 w-4 flex-shrink-0" />
-                                <span className="font-medium text-foreground">{browser}</span>
+                                <span className="font-medium text-foreground">
+                                  {visit.userAgentInfo.browser.name}{' '}
+                                  {visit.userAgentInfo.browser.version}
+                                </span>
                                 <span>on</span>
-                                <span className="font-medium text-foreground">{os}</span>
+                                <span className="font-medium text-foreground">
+                                  {visit.userAgentInfo.os.name} {visit.userAgentInfo.os.version}
+                                </span>
                               </div>
-
-                              <div className="flex items-start gap-2 text-muted-foreground">
-                                <Globe className="mt-1 h-4 w-4 flex-shrink-0" />
-                                <div className="space-y-1">
-                                  {ipChain &&
-                                    ipChain.map((ip, idx) => (
+                              {visit.ipInfo.city && visit.ipInfo.regionName && (
+                                <div className="flex items-center">
+                                  <a
+                                    href={`https://www.google.com/maps/place/${visit.ipInfo.city}, ${visit.ipInfo.regionName}, ${visit.ipInfo.zip} ${visit.ipInfo.countryCode}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group block"
+                                  >
+                                    <div className="flex gap-2">
+                                      <MapPin className="h-4 w-4 flex-shrink-0" />
+                                      <span className="font-medium text-foreground">
+                                        {visit.ipInfo.city}, {visit.ipInfo.regionName},{' '}
+                                        {visit.ipInfo.zip} {visit.ipInfo.countryCode}
+                                      </span>
+                                    </div>
+                                  </a>
+                                </div>
+                              )}
+                              {ipChain && (
+                                <div className="flex items-start gap-2 text-muted-foreground">
+                                  <Globe className="mt-1 h-4 w-4 flex-shrink-0" />
+                                  <div className="flex flex-col">
+                                    {ipChain.map((ip, idx) => (
                                       <div key={idx} className="flex items-center gap-1.5">
-                                        <span className="font-medium text-foreground">{ip}</span>
+                                        <span key={idx} className="font-medium text-foreground">
+                                          {ip}
+                                        </span>
                                         {idx === 0 && (
                                           <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
                                             Origin
@@ -268,9 +314,9 @@ export default async function StatsPage({ params }: { params: { shortKey: string
                                         )}
                                       </div>
                                     ))}
+                                  </div>
                                 </div>
-                              </div>
-
+                              )}
                               <div className="group flex items-end gap-2">
                                 <Terminal className="mt-1 h-4 w-4 flex-shrink-0 text-muted-foreground" />
                                 <div className="font-mono text-[11px] leading-normal opacity-60 transition-opacity group-hover:opacity-100">
