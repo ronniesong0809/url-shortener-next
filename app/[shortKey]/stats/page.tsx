@@ -242,7 +242,7 @@ export default async function StatsPage({ params }: { params: { shortKey: string
                           )}
                         >
                           <div className="absolute left-8 flex -translate-x-1/2 flex-col items-center">
-                            <div className="h-4 w-4 rounded-full border-2 border-primary bg-background ring-4 ring-background" />
+                            <div className={"h-4 w-4 rounded-full border-2 border-primary ring-4 ring-background " + (isFirst ? 'bg-black' : 'bg-background')} />
                             {!isLast && <div className="h-full w-[2px] bg-border/50" />}
                           </div>
 
