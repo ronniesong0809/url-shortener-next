@@ -1,4 +1,4 @@
-import { UrlPaginationResponse } from '@/types'
+import { MetadataPaginationResponse, UrlPaginationResponse } from '@/types'
 
 export async function getAllUrls(page?: number, limit: number = 10) {
   const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/all`)
@@ -63,4 +63,16 @@ export async function extendUrl(shortKey: string, expiration: number) {
   }
 
   return res.json()
+}
+
+export async function getMetadata() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/all/metadata`, {
+    cache: 'no-store'
+  })
+  if (!res.ok) {
+    throw new Error('Failed to fetch URLs')
+  }
+
+  const data: MetadataPaginationResponse = await res.json()
+  return data
 }

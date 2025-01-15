@@ -16,6 +16,7 @@ import {
   CommandShortcut
 } from '@/components/ui/command'
 import { UrlMetadataEntry } from '@/types'
+import { getMetadata } from '@/app/api/urls'
 
 export function Header() {
   const router = useRouter()
@@ -37,8 +38,7 @@ export function Header() {
   useEffect(() => {
     if (open) {
       setLoading(true)
-      fetch('https://shorturl.ronniesong.com/all/metadata')
-        .then((response) => response.json())
+      getMetadata()
         .then((data) => setUrls(data.content))
         .catch(console.error)
         .finally(() => setLoading(false))
