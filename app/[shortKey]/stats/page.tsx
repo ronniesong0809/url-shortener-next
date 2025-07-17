@@ -48,8 +48,11 @@ export default async function StatsPage({ params }: { params: { shortKey: string
 
   if (!stats) return null
 
-  // Get the latest visit
-  const latestVisit = stats.content.visits[stats.content.visits.length - 1]
+  // Get the latest visit if available
+  const latestVisit =
+    stats.content.visits.length > 0
+      ? stats.content.visits[stats.content.visits.length - 1]
+      : null
 
   return (
     <div className="container mx-auto py-10">

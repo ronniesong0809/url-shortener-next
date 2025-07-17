@@ -3,10 +3,23 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { UrlVisitInfo } from '@/types/analytics'
 
 interface LastVisitProps {
-  visit: UrlVisitInfo
+  visit: UrlVisitInfo | null
 }
 
 export function LastVisit({ visit }: LastVisitProps) {
+  if (!visit) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Last Visit</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">No visits yet.</p>
+        </CardContent>
+      </Card>
+    )
+  }
+
   const ipChain = visit.ip?.split(',').map((ip: string) => ip.trim()) || visit.ip || null
 
   return (

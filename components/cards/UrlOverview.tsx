@@ -7,7 +7,7 @@ interface UrlOverviewProps {
   clicks: number
   createdAt: string
   updatedAt: string
-  latestVisit: UrlVisitInfo
+  latestVisit: UrlVisitInfo | null
 }
 
 export function UrlOverview({ clicks, createdAt, updatedAt, latestVisit }: UrlOverviewProps) {
@@ -55,9 +55,11 @@ export function UrlOverview({ clicks, createdAt, updatedAt, latestVisit }: UrlOv
           <div>
             <p className="text-sm text-muted-foreground">Last Visit</p>
             <p className="font-medium">
-              {formatDistanceToNow(new Date(latestVisit.createdAt), {
-                addSuffix: true
-              })}
+              {latestVisit
+                ? formatDistanceToNow(new Date(latestVisit.createdAt), {
+                    addSuffix: true
+                  })
+                : 'No visits yet'}
             </p>
           </div>
         </div>
